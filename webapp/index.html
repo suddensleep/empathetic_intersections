@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  
+  <head>
+    
+    <meta charset="utf-8" />
+    
+    <title>Change My View</title>
+    
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.2/d3.js">
+    </script>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+    </script>
+    
+    <style>
+      
+      body {font-family: monospace; line-height: 160%; font-size: 18px; }
+      
+      ul {list-style: none; margin: 0; padding: 0;}
+      
+      li {display: inline-block; min-width: 80px; padding: 10px; background-color: #eee;
+      margin: 0;}
+      
+      input {border: 1px dotted #ccc; background: white; font-family: monospace;
+      padding: 10px 20px; font-size: 18px; margin: 20px 10px 20px 0; color: red;}
+      
+      input:focus { background-color:yellow; outline: none;}
+    
+    </style>
+  
+  </head>
+
+  <body>
+
+    <p> This tool will read your opinion on a given topic, then find a conversation from Reddit (/r/changemyview) that best represents a balanced argument about that topic.
+    </p>
+
+    <form name="submitform" method="post" onSubmit="return handleClick()">
+      
+      <input name="Submit" type="submit" value="Tell me how you really feel:" >
+      
+      <input type="text" id="myVal" placeholder="Enter opinion here&hellip;">
+    
+    </form>
+
+    <!--
+    <form role="form" method='POST' action='/search'>
+      <div class="form-group">
+        <input type="text" name="data" class="form-control" id="data" placeholder="Enter Twitter ID..." style="max-width: 300px;">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    -->
+    <ul></ul>
+    
+    <script>
+
+      function handleClick(event) {
+      console.log(typeof(document.getElementById('myVal').value));
+      draw(document.getElementById('myVal').value);
+      return false;
+      }
+      
+      function draw(val) {
+      $.ajax({
+      type: "POST", 
+      contentType: "application/json; charset=utf-8",
+      url: "/search",
+      dataType: "json", 
+      async: true, 
+      data: "{\"example\": \""+val+"\"}",
+      success: function(data) {
+      var elements = document.getElementsByClassName("temp");
+      while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+      var dataset = data["results"];
+      var p = d3.select('ul').selectAll('li')
+      .data(dataset).enter().append('li')
+      .text(function(d, i) {return d;})
+      .attr("class", "temp");
+      },
+      error: function (result) {
+      console.log('oops');
+      console.log("{\"example\": "+val+"}");
+      }
+      })
+      }
+
+    </script>
+  
+  </body>
+
+</html>

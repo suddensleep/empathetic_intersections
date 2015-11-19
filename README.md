@@ -1,1 +1,3 @@
-# empathetic_intersections
+# Empathetic Intersections: Change My View
+
+Within you'll find notebooks and serialized files representing various corpora to build a web application called Change My View. The app takes a user's opinion about anything (try politics, family values, etc.) as input and uses LDA and topic modeling to find an instance on the subreddit /r/changemyview of a productive conversation about both sides of the given issue. Additionally, you'll find a set of slides describing my process through this project.
